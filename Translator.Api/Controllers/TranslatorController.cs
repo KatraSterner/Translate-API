@@ -9,16 +9,16 @@ namespace Translator.Api.Controllers;
 public class TranslatorController(TranslateService translateService) : ControllerBase
 {
     [HttpPost]
-    public ActionResult<Message> Translate([FromBody] string prompt)
+    public ActionResult<TranslationDTO> Translate([FromBody] TranslationPrompt prompt)
     {
-        if (string.IsNullOrWhiteSpace(prompt))
+        if (string.IsNullOrEmpty(prompt.Prompt))
         {
-            return BadRequest("prompt cannot be translated if it is empty...");
+            prompt.Prompt = "prompt cannot be translated if it is empty...";
         }
 
-        var response = new Message
+        var response = new TranslationDTO
         {
-            Prompt = prompt,
+            Prompt = prompt.Prompt,
             Translation = translateService.TranslatePrompt(prompt)
         };
         

@@ -1,10 +1,12 @@
-﻿namespace Translator.Core.Services;
+﻿using Translator.Core.Models;
+
+namespace Translator.Core.Services;
 
 public class TranslateService
 {
-    public string TranslatePrompt(string prompt)
+    public string TranslatePrompt(TranslationPrompt prompt)
     {
-        if (string.IsNullOrEmpty(prompt))
+        if (string.IsNullOrEmpty(prompt.Prompt))
         {
             return "No text provided.";
         }
