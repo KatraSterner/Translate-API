@@ -1,8 +1,8 @@
 # Translate-API
 C# project using a Google API to solve a real-world problem.
 
-Aims to use NuGet packages to translate text 
-entered by the user to english or from english 
+Aims to use the Gtranslate NuGet package to translate
+text entered by the user to english or from english 
 to a selected language. 
 
 ### Instructions: 
@@ -24,3 +24,41 @@ approach and *explain why using comments*.
    - start with just english to spanish
    - eventually use a dropdown?
  - view previous translations?
+
+## Structure:
+The structure we chose to use for this project
+features no Interface or Repository layer. This
+is because this application does not use a 
+database, and therefore does not need a layer
+to interact with one. 
+
+### Core
+
+The app keeps all logic in the ".Core"
+project, specifically in the Service layer. The
+".Core" project also includes our Models directory
+which includes a Prompt for passing in user input
+(text prompt and target language) from the Svelte
+front-end. There is also a DTO used for sending 
+BACK this information from the API (the user's
+text prompt and the translated result). 
+
+### API
+
+This layer of the app includes anything that will
+interact with the Svelte front-end. This means
+the controller that sends data to a localhost URL
+will be accessible for the front-end to access. 
+This project serves as the middleman between our 
+logic and our application UI.
+
+### Web
+
+The front-end of this application uses Svelte, 
+a JavaScript framework, and hey api to gain access
+to the API project of our solution. It performs a 
+fetch to the url endpoint that the API is sending
+data to which exchanges the user's prompt and selected
+target language for a translated prompt and the 
+original prompt for reference. This data is then 
+displayed to the user using stateful variables. 

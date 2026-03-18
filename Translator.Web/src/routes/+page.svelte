@@ -1,10 +1,13 @@
 <script lang="ts">
-    // NOTE: Claude AI used for styling 
+    // NOTE: Claude AI used for styling
     
-    let userPrompt = $state("Hello"); // TODO: remove - temporary for testing
+    let userPrompt = $state("Hello"); 
     let result = $state<{ prompt: string, translation: string } | null>(null);
     let selectedLanguage = $state("");
     
+    let availableLanguages: string[] = [["en", "English"], ["es", "Spanish"], ["fr", "French"], ["ja", "Japanese"], ["de", "German"], ["it", "Italian"]];
+    
+    // when user enters their prompt, send it to the API controller and await the result
     async function handleSubmit(e: Event) {
         e.preventDefault();
         
@@ -48,12 +51,9 @@
                             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono bg-gray-50 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300"
                     >
                         <option value="" disabled hidden>Select target language...</option>
-                        <option value="en">English</option>
-                        <option value="es">Spanish</option>
-                        <option value="ja">Japanese</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                        <option value="it">Italian</option>
+                        {#each availableLanguages as language}
+                            <option value="{language[0]}">{language[1]}</option>
+                        {/each}
                     </select>
                 </div>
 
@@ -99,7 +99,6 @@
                     <span class="text-sm text-gray-800 font-mono">
                         {#if result?.translation}
                             <span class="text-gray-500">— {result?.translation}</span>
-                            
                         {/if}
                     </span>
                 </div>
