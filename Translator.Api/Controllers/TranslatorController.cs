@@ -9,17 +9,21 @@ namespace Translator.Api.Controllers;
 public class TranslatorController(TranslateService translateService) : ControllerBase
 {
     [HttpPost]
-    public ActionResult<TranslationDTO> Translate([FromBody] TranslationPrompt prompt)
+    public async Task<ActionResult<TranslationDTO>> Translate([FromBody] TranslationPrompt translationPrompt)
     {
-        if (string.IsNullOrEmpty(prompt.Prompt))
+        Console.WriteLine("-----------------------------------------------");
+        Console.WriteLine($"Prompt: {translationPrompt.Prompt}");
+        Console.WriteLine($"TargetLanguage: {translationPrompt.TargetLanguage}");
+        
+        if (string.IsNullOrEmpty(translationPrompt.Prompt))
         {
-            prompt.Prompt = "prompt cannot be translated if it is empty...";
+            translationPrompt.Prompt = "prompt cannot be translated if it is empty...";
         }
-
+        
         var response = new TranslationDTO
         {
-            Prompt = prompt.Prompt,
-            Translation = translateService.TranslatePrompt(prompt)
+            Prompt = translationPrompt.Prompt,
+            Translation = await translateService.GetTranslation(translationPrompt)
         };
         
         return Ok(response);

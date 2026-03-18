@@ -1,21 +1,19 @@
 <script lang="ts">
-    // NOTE: Claude AI used for styling - 2026
+    // NOTE: Claude AI used for styling 
     
-    let userPrompt = $state("");
+    let userPrompt = $state("Hello"); // TODO: remove - temporary for testing
     let result = $state<{ prompt: string, translation: string } | null>(null);
     let selectedLanguage = $state("");
     
     async function handleSubmit(e: Event) {
         e.preventDefault();
         
-        // TODO: pass in selected language too
-        
         const response = await fetch("http://localhost:5006/api/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ prompt: userPrompt }),
+            body: JSON.stringify({ prompt: userPrompt, targetLanguage: selectedLanguage }),
         });
 
         result = await response.json();
@@ -44,13 +42,18 @@
                         Target language
                     </label>
                     <select
+                            required
                             name="language"
                             bind:value={selectedLanguage}
                             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono bg-gray-50 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300"
                     >
-                        <option value="" disabled hidden>Select language...</option>
-                        <option value="Eng">English</option>
-                        <option value="Spa">Spanish</option>
+                        <option value="" disabled hidden>Select target language...</option>
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="ja">Japanese</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
                     </select>
                 </div>
 
@@ -85,7 +88,7 @@
                     </span>
                     <span class="text-sm text-gray-800 font-mono">
                         {#if result?.prompt}
-                            <span class="text-gray-300">— {result?.prompt}</span>
+                            <span class="text-gray-500">— {result?.prompt}</span>
                         {/if}
                     </span>
                 </div>
@@ -95,7 +98,7 @@
                     </span>
                     <span class="text-sm text-gray-800 font-mono">
                         {#if result?.translation}
-                            <span class="text-gray-300">— {result?.translation}</span>
+                            <span class="text-gray-500">— {result?.translation}</span>
                             
                         {/if}
                     </span>

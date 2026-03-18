@@ -1,18 +1,20 @@
-﻿using Translator.Core.Models;
+﻿using GTranslate.Translators;
+using Translator.Core.Models;
 
 namespace Translator.Core.Services;
 
 public class TranslateService
 {
-    public string TranslatePrompt(TranslationPrompt prompt)
+    public async Task<string> GetTranslation(TranslationPrompt prompt)
     {
         if (string.IsNullOrEmpty(prompt.Prompt))
         {
             return "No text provided.";
         }
         
-        // TODO: implement NuGet package to translate prompt here!!!!!!!!!
+        var translator = new GoogleTranslator();
+        var result = await translator.TranslateAsync(prompt.Prompt, prompt.TargetLanguage);
 
-        return "Translated text placeholder...";
+        return result.Translation;
     }
 }
